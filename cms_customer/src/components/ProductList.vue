@@ -63,6 +63,16 @@
         </v-card-text>
       </v-card>
       </v-dialog>
+      <v-dialog
+      v-model="dialogsuccess"
+      max-width="500px"
+      >
+        <v-card>
+          <v-card-title>
+            <span class="success--text">{{ successMessage }}</span>
+          </v-card-title>
+        </v-card>
+      </v-dialog>
     </v-row>
 </template>
 
@@ -76,7 +86,8 @@ export default {
       dialog: false,
       product: {},
       total: 1,
-      notes: ''
+      notes: '',
+      dialogsuccess: false
     }
   },
   computed: {
@@ -85,6 +96,9 @@ export default {
     },
     carts () {
       return this.$store.state.carts
+    },
+    successMessage () {
+      return this.$store.state.successMessage
     }
   },
   methods: {
@@ -104,8 +118,12 @@ export default {
           }
         })
           .then(response => {
-            console.log(response.data)
             this.$store.dispatch('getCarts')
+            this.$store.commit('SET_SUCCESS', 'Berhasil Menambahkan Item')
+            this.dialogsuccess = true
+            setTimeout(() => {
+              this.dialogsuccess = false
+            }, 3000)
             this.dialog = false
           })
           .catch(err => {
@@ -128,7 +146,9 @@ export default {
   },
   created () {
     this.$store.dispatch('getProducts')
-    this.$store.dispatch('getCarts')
+    if (localStorage.token) {
+      this.$store.dispatch('getCarts')
+    }
   }
 }
 </script>

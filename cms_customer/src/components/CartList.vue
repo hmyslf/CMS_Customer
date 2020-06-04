@@ -5,60 +5,80 @@
       <h2>Your Carts</h2>
       <hr>
     </v-col>
-    <v-row
+    <v-col
+      v-if="!carts.length"
+      class="col-12"
+    >
+      <h2>Cart anda Kosong</h2>
+    </v-col>
+    <div v-else-if="carts.length">
+      <v-row
       v-for="item in carts"
       :key="item.id">
-        <v-col
-        class="col-4"
-        >
-          <v-img
-          :contain="true"
-          :src="item.Product.image_url"
-          height="200px"
-          />
-        </v-col>
-        <v-col
-        class="col-4"
-        >
-          <h3>{{ item.Product.name }}</h3>
-          <span>Total : {{ item.total }}</span><br>
-          <v-btn
-          class="error mr-3"
-          @click.prevent="showConfirm(item.Product)"
+          <v-col
+          class="col-4"
           >
-            <v-icon>
-              mdi-delete
-            </v-icon>
-          </v-btn>
-          <v-btn
-          class="primary"
-          @click.prevent="showEdit(item.Product, item.total)"
+            <v-img
+            :contain="true"
+            :src="item.Product.image_url"
+            height="200px"
+            />
+          </v-col>
+          <v-col
+          class="col-4"
           >
-            <v-icon>
-              mdi-pencil
-            </v-icon>
-          </v-btn>
-        </v-col>
+            <h3>{{ item.Product.name }}</h3>
+            <span>Total : {{ item.total }}</span><br>
+            <v-btn
+            class="error mr-3"
+            @click.prevent="showConfirm(item.Product)"
+            >
+              <v-icon>
+                mdi-delete
+              </v-icon>
+            </v-btn>
+            <v-btn
+            class="primary"
+            @click.prevent="showEdit(item.Product, item.total)"
+            >
+              <v-icon>
+                mdi-pencil
+              </v-icon>
+            </v-btn>
+          </v-col>
+          <v-col
+          class="col-4"
+          >
+            <span>{{ formatHarga(item.Product.price * item.total) }}</span>
+          </v-col>
+      </v-row>
+      <v-row>
         <v-col
-        class="col-4"
-        >
-          <span>{{ formatHarga(item.Product.price * item.total) }}</span>
+        class="col-12">
+          <hr>
         </v-col>
-    </v-row>
-    <v-row>
-      <v-col
-      class="col-12">
-        <hr>
-      </v-col>
+          <v-col
+          class="col-8">
+            <h3>Grand Total: </h3>
+          </v-col>
+          <v-col
+          class="col-4">
+            <h3>{{ formatHarga(grandtotal) }}</h3>
+          </v-col>
+      </v-row>
+      <v-row>
         <v-col
-        class="col-8">
-          <h3>Grand Total: </h3>
+        class="col-6">
+          <router-link to="/checkout">
+            <v-btn
+            class="success"
+            >
+              Checkout
+            </v-btn>
+          </router-link>
         </v-col>
-        <v-col
-        class="col-4">
-          <h3>{{ formatHarga(countGrandTotal()) }}</h3>
-        </v-col>
-    </v-row>
+      </v-row>
+    </div>
     <v-dialog
       v-model="dialogdelete"
       :product="product"
@@ -170,13 +190,6 @@ export default {
       this.totaledit = total
       this.dialogedit = true
     },
-    countGrandTotal () {
-      let grandtotal = 0
-      for (let i = 0; i < this.carts.length; i++) {
-        grandtotal += (this.carts[i].total * this.carts[i].Product.price)
-      }
-      return grandtotal
-    },
     formatHarga (number) {
       var rupiah = ''
       var angkarev = number.toString().split('').reverse().join('')
@@ -234,11 +247,16 @@ export default {
     },
     isLogin () {
       return this.$store.state.isLogin
+    },
+    grandtotal () {
+      return this.$store.state.grandtotal
     }
   }
 }
 </script>
 
-<style>
-
+<style scoped>
+  a {
+    text-decoration: none;
+  }
 </style>

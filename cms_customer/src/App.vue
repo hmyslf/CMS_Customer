@@ -16,6 +16,9 @@ export default {
   components: {
     Navbar
   },
+  created () {
+    this.$store.dispatch('getCategories')
+  },
 
   data: () => ({
     //

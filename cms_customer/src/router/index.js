@@ -5,6 +5,8 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import CartList from '../components/CartList.vue'
 import ProductCategory from '../components/ProductCategory.vue'
+import Checkout from '../views/Checkout.vue'
+import OrderList from '../views/OrderList.vue'
 
 Vue.use(VueRouter)
 
@@ -33,6 +35,16 @@ const routes = [
     path: '/category/:id',
     name: 'Category',
     component: ProductCategory
+  },
+  {
+    path: '/checkout',
+    name: 'Checkout',
+    component: Checkout
+  },
+  {
+    path: '/orders',
+    name: 'Orders',
+    component: OrderList
   }
 ]
 

@@ -1,9 +1,27 @@
 <template>
     <v-app-bar
     app
-    color="success"
     dark
   >
+    <v-menu offset-y>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          dark
+          v-on="on"
+        >
+          Category
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item
+          v-for="category in categories"
+          :key="category.id"
+        >
+          <v-list-item-title><router-link :to="`/category/${category.id}`">{{ category.name }}</router-link></v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+    <v-spacer></v-spacer>
     <div class="d-flex align-center">
       <router-link to="/"><h3 class="page-title">RuangToko</h3></router-link>
     </div>
@@ -18,6 +36,12 @@
       <router-link to="/login"><span class="mr-2">Login</span></router-link>
       <v-icon>mdi-user</v-icon>
     </v-btn>
+    <router-link to='/orders' v-if="isLogin">
+        <v-icon
+        class="mr-2">
+          mdi-shopping
+        </v-icon>
+      </router-link>
     <v-badge
     color="blue"
     :content="total"
@@ -57,6 +81,7 @@ export default {
     logout () {
       localStorage.clear()
       this.$store.commit('SET_LOGIN', false)
+      this.$router.push({ name: 'Login' })
     }
   },
   computed: {
@@ -68,6 +93,9 @@ export default {
     },
     total () {
       return this.countItem()
+    },
+    categories () {
+      return this.$store.state.categories
     }
   }
 }

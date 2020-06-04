@@ -7,6 +7,7 @@
       class="col-4 border"
       >
         <h3 class="text-center">Login</h3><br>
+        <span v-if="errorMessage" class="red--text">{{ errorMessage }}</span>
         <span v-if="successMessage" class="green--text">{{ successMessage }}</span>
         <v-form
         ref="form"
@@ -37,6 +38,12 @@
           type="submit">
           Login
           </v-btn>
+          <v-progress-circular
+              indeterminate
+              color="primary"
+              class="ml-5"
+              v-if="loading"
+            ></v-progress-circular>
         </v-form><br>
         <span>Don't have an account? <router-link to="/register">Register</router-link></span>
       </v-col>
@@ -58,22 +65,26 @@ export default {
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
       ],
-      password: ''
+      password: '',
+      loading: false
     }
   },
   methods: {
     login () {
+      this.loading = true
       server.post('/login', {
         email: this.email,
         password: this.password
       })
         .then(results => {
+          this.loading = false
           localStorage.setItem('token', results.data.token)
           this.$store.commit('SET_LOGIN', true)
           this.$router.push({ name: 'LandingPage' })
         })
         .catch(err => {
-          console.log(err.response)
+          this.loading = false
+          this.$store.commit('SET_ERROR', err.response.data.errors.message)
         })
     }
   },
@@ -93,6 +104,9 @@ export default {
     },
     successMessage () {
       return this.$store.state.successMessage
+    },
+    errorMessage () {
+      return this.$store.state.errorMessage
     }
   }
 }

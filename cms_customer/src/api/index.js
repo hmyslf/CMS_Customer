@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const server = axios.create({
-  baseURL: 'http://localhost:3000'
+  baseURL: 'https://gentle-reaches-91469.herokuapp.com'
 })
 
 export default server
