@@ -138,11 +138,10 @@ export default {
           }
         })
           .then(response => {
-            console.log(response.data)
             this.$store.dispatch('getCarts')
           })
           .catch(err => {
-            console.log(err.response)
+            this.$store.commit('SET_ERROR', err.response.data.errors.message)
           })
       } else {
         this.$router.push({ name: 'Login' })

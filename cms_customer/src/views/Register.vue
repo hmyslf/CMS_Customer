@@ -90,7 +90,6 @@ export default {
             this.$router.push({ name: 'Login' })
           })
           .catch(err => {
-            console.log(err.response)
             this.$store.commit('SET_ERROR', err.response.data.errors[0].message)
             setTimeout(() => {
               this.$store.commit('SET_ERROR', '')

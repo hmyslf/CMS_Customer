@@ -115,7 +115,6 @@ export default {
         }
       })
         .then(({ data }) => {
-          console.log(data)
           this.$store.commit('SET_SUCCESS', 'Berhasil Checkout')
           this.$router.push({ name: 'Orders' })
         })

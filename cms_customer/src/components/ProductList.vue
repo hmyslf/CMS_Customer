@@ -127,7 +127,7 @@ export default {
             this.dialog = false
           })
           .catch(err => {
-            console.log(err.response)
+            this.$store.commit('SET_ERROR', err.response.data.errors.message)
           })
       } else {
         this.$router.push({ name: 'Login' })

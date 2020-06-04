@@ -214,7 +214,7 @@ export default {
           this.dialogdelete = false
         })
         .catch(err => {
-          console.log(err.response)
+          this.$store.commit('SET_ERROR', err.response.data.errors.message)
         })
     },
     editItem () {
@@ -236,7 +236,7 @@ export default {
             this.dialogedit = false
           })
           .catch(err => {
-            console.log(err.response)
+            this.$store.commit('SET_ERROR', err.response.data.errors.message)
           })
       }
     }
